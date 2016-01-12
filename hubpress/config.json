@@ -1,10 +1,1 @@
-{
-  "meta": {
-    "username": "dakeshi",
-    "repositoryName": "dakeshi.github.io",
-    "branch": "master"
-  },
-  "theme": {
-    "name": "Casper"
-  }
-}
+{"meta":{"username":"dakeshi","repositoryName":"dakeshi.github.io","branch":"master"},"site":{"url":"https://dakeshi.github.io"},"socialnetwork":{"email":"iceblue.dev@gmail.com"},"theme":{"name":"Casper","url":"//dakeshi.github.io/themes/Casper"}}
