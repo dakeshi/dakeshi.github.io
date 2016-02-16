@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>[Swift] Google Analytics using CocoaPods</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//dakeshi.github.io/themes/Roon/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:400,700,400italic,700italic|Open+Sans:400italic,700italic,700,400">
+    <link rel="stylesheet" type="text/css" href="//dakeshi.github.io/themes/Roon/assets/css/screen.css?v=1.0.0" />
+
+    <link rel="canonical" href="https://dakeshi.github.io/2016/02/16/Swift-Google-Analytics-using-Cocoa-Pods.html" />
+    
+    <meta property="og:site_name" content="Sangjoon Moon Personal Blog" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="[Swift] Google Analytics using CocoaPods" />
+    <meta property="og:description" content="There are two options for implementation with Google Analytics using CocoaPods. pod &#x27;Google/Analytics&#x27; pod &#x27;GoogleAnalytics&#x27; There are pros and cons between them. pod &#x27;Google/Analytics&#x27; need google configuration file(GoogleService-Info.plist) simple bridging header file. Just ad..." />
+    <meta property="og:url" content="https://dakeshi.github.io/2016/02/16/Swift-Google-Analytics-using-Cocoa-Pods.html" />
+    <meta property="article:published_time" content="2016-02-15T15:00:00.000Z" />
+    <meta property="article:modified_time" content="2016-02-16T05:02:39.961Z" />
+    <meta property="article:tag" content="Google Analytics" />
+    <meta property="article:tag" content="CocoaPods" />
+    <meta property="article:tag" content="Swift" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="[Swift] Google Analytics using CocoaPods" />
+    <meta name="twitter:description" content="There are two options for implementation with Google Analytics using CocoaPods. pod &#x27;Google/Analytics&#x27; pod &#x27;GoogleAnalytics&#x27; There are pros and cons between them. pod &#x27;Google/Analytics&#x27; need google configuration file(GoogleService-Info.plist) simple bridging header file. Just ad..." />
+    <meta name="twitter:url" content="https://dakeshi.github.io/2016/02/16/Swift-Google-Analytics-using-Cocoa-Pods.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Sangjoon Moon Personal Blog",
+    "author": {
+        "@type": "Person",
+        "name": "Sangjoon Moon",
+        "image": "https://avatars.githubusercontent.com/u/8563047?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": "http://dakeshi.github.io/"
+    },
+    "headline": "[Swift] Google Analytics using CocoaPods",
+    "url": "https://dakeshi.github.io/2016/02/16/Swift-Google-Analytics-using-Cocoa-Pods.html",
+    "datePublished": "2016-02-15T15:00:00.000Z",
+    "dateModified": "2016-02-16T05:02:39.961Z",
+    "keywords": "Google Analytics,  CocoaPods,  Swift",
+    "description": "There are two options for implementation with Google Analytics using CocoaPods. pod &#x27;Google/Analytics&#x27; pod &#x27;GoogleAnalytics&#x27; There are pros and cons between them. pod &#x27;Google/Analytics&#x27; need google configuration file(GoogleService-Info.plist) simple bridging header file. Just ad..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="Sangjoon Moon Personal Blog" href="https://dakeshi.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-Google-Analytics tag-Cocoa-Pods tag-Swift  noimage">
+
+    
+
+
+    <article role="main" class="">
+        <header>
+            <a href="https://dakeshi.github.io" id="home_link">«</a>
+            <div class="meta"><time datetime="2016-02-16"><a href="/2016/02/16/Swift-Google-Analytics-using-Cocoa-Pods.html">February 16, 2016</a></time> <span class="count" id="js-reading-time"></span></div>
+            <h1>[Swift] Google Analytics using CocoaPods</h1>
+        </header>
+
+        <div class="text" id="js-post-content">
+            <div class="paragraph">
+<p>There are two options for implementation with Google Analytics using CocoaPods.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pod 'Google/Analytics'</p>
+</li>
+<li>
+<p>pod 'GoogleAnalytics'</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There are pros and cons between them.</p>
+</div>
+<div class="paragraph">
+<p><strong>pod 'Google/Analytics'</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>need google configuration file(GoogleService-Info.plist)</p>
+</li>
+<li>
+<p>simple bridging header file. Just add <code>#import &lt;Google/Analytics.h&gt;</code> in bridging header file.</p>
+</li>
+<li>
+<p>add `import Google`in every file you want to implement google analytics.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>pod 'GoogleAnalytics'</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>no google configuration file(GoogleService-Info.plist)</p>
+</li>
+<li>
+<p>more complex bridging header file.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I prefer to use <code>pod 'GoogleAnalytics'</code> but I&#8217;ll explain how to solve this issue using pod 'Google/Analytics'
+because the google official site uses pod 'Google/Analytics'.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>bridging header</p>
+<div class="paragraph">
+<p>You just need one line of code for google analytics.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>#import &lt;Google/Analytics.h&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t forget to set target-build setting for Objective-C-Bridging-Header.
+You have to provide correct path to enable Objective-C-Bridging-Header.</p>
+</div>
+<div class="paragraph">
+<p><strong>Set Target-Build Setting-Objective-C-Bridging-Header</strong>
+$(SRCROOT)/$(PRODUCT_NAME)/projectName_Bridging_Header.h</p>
+</div>
+</li>
+<li>
+<p>AppDelegate.swift</p>
+</li>
+</ol>
+</div>
+<div id="AppDelegate" class="listingblock">
+<div class="title">AppDelegate.swift</div>
+<div class="content">
+<pre class="highlight"><code class="language-swift" data-lang="swift">    import Google
+
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)
+    -&gt; Bool { self.setupGoogleAnalytics()
+    ..
+         self.setupGoogleAnalytics()
+    ..
+     }
+
+    func setupGoogleAnalytics() {
+
+        // Configure tracker from GoogleService-Info.plist.
+        let configureError:NSError?
+        GGLContext.sharedInstance().configureWithError(&amp;configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+
+        let gai = GAI.sharedInstance()
+        gai.trackUncaughtExceptions = true  // report uncaught exceptions
+        gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
+    }</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>SomeViewController.swift</p>
+</li>
+</ol>
+</div>
+<div id="ViewController" class="listingblock">
+<div class="title">SomeViewController.swift</div>
+<div class="content">
+<pre class="highlight"><code class="language-swift" data-lang="swift">    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+
+        if let default_tracker = GAI.sharedInstance().defaultTracker {
+            #if DEBUG
+
+                print("default tracker")
+
+            #endif
+        }
+
+        //        let tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("tracking_ID")
+        tracker.set(kGAIScreenName, value: screenName)
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Why do I use trackerWithTrackingId instead of defaultTracker property? You could got an error if you use defaultTracker :</p>
+</div>
+<div class="paragraph">
+<p><strong>fatal error: unexpectedly found nil while unwrapping an Optional value</strong></p>
+</div>
+<div class="paragraph">
+<p>defaultTracker property&#8217;s initial value is nil, but it will be set after
+trackerWithTrackingId method is called. But it doesn&#8217;t work perfectly sometimes. To avoid this issue, I recommend that use trackerWithTrackingId method directly.</p>
+</div>
+<div class="paragraph">
+<p><strong>Test Env</strong></p>
+</div>
+<div class="paragraph">
+<p>GoogleAnalytics 3.14</p>
+</div>
+<div class="paragraph">
+<p>Xcode 7.2.1</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For <code>pod 'GoogleAnalytics'</code></p>
+</div>
+<div class="paragraph">
+<p>I make the <a href="https://github.com/dakeshi/GoogleAnalyticsExample">sample project</a> using pod 'GoogleAnalytics'.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+        </div>
+
+        <menu>
+            <a href="" id="btn_share" class="btn" title="Share">
+                <span aria-hidden="true" data-icon="S"></span>
+                <strong>Share</strong>
+            </a>
+            <a href="http://twitter.com/share?text=%5BSwift%5D%20Google%20Analytics%20using%20CocoaPods&url=https://dakeshi.github.io/2016/02/16/Swift-Google-Analytics-using-Cocoa-Pods.html" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" id="btn_comment" class="btn" target="_blank">
+                <span aria-hidden="true" data-icon="C"></span> Comment on Twitter
+            </a>
+        </menu>
+
+
+        <footer class="post-footer" role="contentinfo">
+
+            <div class="vcard">
+                <!-- <a href="https://dakeshi.github.io/rss" id="btn_feed" class="btn" title="Feed" target="_blank">
+                    <span aria-hidden="true" data-icon=")"></span>
+                    <strong>Feed</strong>
+                </a> -->
+
+                <a href="" class="photo">
+                    <span style="background-image: url('https://avatars.githubusercontent.com/u/8563047?v=3');">
+                        <img src="https://avatars.githubusercontent.com/u/8563047?v=3" alt="Sangjoon Moon">
+                    </span>
+                </a>
+
+                <div class="details">
+                    <h4><a href="" class="url n">Sangjoon Moon</a></h4>
+                    Gwangju, South Korea<br>
+                    <a href="http://dakeshi.github.io/" class="js-remove-domain-schema">http://dakeshi.github.io/</a>
+                </div>
+            </div>
+
+            <div id="user_bio">
+                <div class="inner">
+                    
+                </div>
+            </div>
+
+        </footer>
+
+
+
+
+    </article>
+
+    <div id="share_modal">
+        <div class="wrap">
+            <div class="inner">
+                <header>
+                    Share
+                    <a href="" class="close" title="Close">&times;</a>
+                </header>
+
+                <div class="roon-share-links">
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-dnt="true">Tweet</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+                    <div id="fb-elems">
+                        <div id="fb-root"></div>
+                        <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=463438580397968";
+                        fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));</script>
+                        <div class="fb-like" data-send="false" data-layout="button_count" data-width="110" data-show-faces="false" data-font="arial"></div>
+                    </div>
+
+                    <div id="pinit-btn">
+                        <a href="//pinterest.com/pin/create/button/?url=https://dakeshi.github.io/2016/02/16/Swift-Google-Analytics-using-Cocoa-Pods.html&amp;description=%5BSwift%5D%20Google%20Analytics%20using%20CocoaPods-Sangjoon%20Moon%20Personal%20Blog " data-pin-do="buttonPin" data-pin-config="beside"><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png"></a>
+                        <script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+
+            function get_text(el) {
+                ret = "";
+                var length = el.childNodes.length;
+                for(var i = 0; i < length; i++) {
+                    var node = el.childNodes[i];
+                    if(node.nodeType != 8) {
+                        ret += node.nodeType != 1 ? node.nodeValue : get_text(node);
+                    }
+                }
+                return ret;
+            }
+            function reading_time () {
+                var post_content = document.getElementById('js-post-content');
+                if (post_content) {
+                    var words = get_text(post_content),
+                        count = words.split(/\s+/).length,
+                        read_time = Math.ceil((count / 150)),
+                        read_time_node = document.createTextNode(read_time + ' min read');
+                    document.getElementById('js-reading-time').appendChild(read_time_node);
+                }
+            }
+
+        function no_schema_links () {
+            var links = document.querySelectorAll('.js-remove-domain-schema');
+            if (links) {
+                for (i = 0; i < links.length; ++i) {
+                    var link = links[i],
+                        text = link.innerHTML,
+                        no_schema = text.replace(/.*?:\/\//g, "");
+                    link.innerHTML = no_schema;
+                }
+            }
+        }
+
+        window.onload = function () {
+            no_schema_links();
+
+            reading_time();
+        }
+    </script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+        <script>
+            $(function(){
+                var share_modal = $("#share_modal"),
+                    update_social_links = true;
+
+                $("#btn_share").click(function(){
+                    var that = $(this);
+                    share_modal.fadeIn(200);
+                    return false;
+                });
+
+                share_modal.click(function(e){
+                    if (e.target.className == "wrap" || e.target.id == "share_modal") {
+                        share_modal.fadeOut(200);
+                    }
+                    return false;
+                });
+
+                share_modal.find("div.inner > header > a.close").click(function(){
+                    share_modal.fadeOut(200);
+                    return false;
+                });
+            });
+        </script>
+
+
+
+</body>
+</html>
