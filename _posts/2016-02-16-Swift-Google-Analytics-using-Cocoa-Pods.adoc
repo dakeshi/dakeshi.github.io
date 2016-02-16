@@ -1,0 +1,101 @@
+= [Swift] Google Analytics using CocoaPods
+:hp-tags: Google Analytics, CocoaPods, Swift
+
+There are two options for implementation with Google Analytics using CocoaPods. 
+
+1. pod 'Google/Analytics'
+2. pod 'GoogleAnalytics' 
+
+There are pros and cons between them.
+
+*pod 'Google/Analytics'*
+
+- need google configuration file(GoogleService-Info.plist)
+- simple bridging header file. Just add `#import <Google/Analytics.h>` in bridging header file.
+- add `import Google`in every file you want to implement google analytics.
+
+*pod 'GoogleAnalytics'*
+
+- no google configuration file(GoogleService-Info.plist)
+- more complex bridging header file. 
+
+
+I prefer to use `pod 'GoogleAnalytics'` but I'll explain how to solve this issue using pod 'Google/Analytics'
+because the google official site recommends pod 'Google/Analytics'.
+
+. bridging header
++
+You just need one line of code for google analytics.
+
+ #import <Google/Analytics.h>
+
+Don't forget to set target-build setting for Objective-C-Bridging-Header.
+You have to provide correct path to enable Objective-C-Bridging-Header.
+
+**Set Target-Build Setting-Objective-C-Bridging-Header**
+$(SRCROOT)/$(PRODUCT_NAME)/projectName_Bridging_Header.h
+
+
+2. AppDelegate.swift
+
+<!-- language: lang-swift -->
+
+    import Google
+
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)
+    -> Bool { self.setupGoogleAnalytics()
+    ..
+         self.setupGoogleAnalytics()
+    ..
+     }
+    
+    func setupGoogleAnalytics() {
+        
+        // Configure tracker from GoogleService-Info.plist.
+        let configureError:NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+    
+        let gai = GAI.sharedInstance()
+        gai.trackUncaughtExceptions = true  // report uncaught exceptions
+        gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
+    }
+
+3. SomeViewController.swift
+
+<!-- language: lang-swift -->
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+      
+        if let default_tracker = GAI.sharedInstance().defaultTracker {
+            #if DEBUG
+                
+                print("default tracker")
+                
+            #endif
+        }
+        
+        //        let tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().trackerWithTrackingId("tracking_ID")
+        tracker.set(kGAIScreenName, value: screenName)
+        let builder = GAIDictionaryBuilder.createScreenView()
+        tracker.send(builder.build() as [NSObject : AnyObject])
+        
+    }
+
+Why do I use trackerWithTrackingId instead of defaultTracker property? You could got an error if you use defaultTracker :
+
+*fatal error: unexpectedly found nil while unwrapping an Optional value*
+
+defaultTracker property's initial value is nil, but it will be set after 
+trackerWithTrackingId method is called. But it doesn't work perfectly sometimes. To avoid this issue, I recommend that use trackerWithTrackingId method directly.
+
+I make the [sample project](https://github.com/dakeshi/GoogleAnalyticsExample) using pod 'GoogleAnalytics'. You can get an idea from it. 
+Good luck.
+
+**Test Env**
+
+GoogleAnalytics 3.14
+
+Xcode 7.2.1
