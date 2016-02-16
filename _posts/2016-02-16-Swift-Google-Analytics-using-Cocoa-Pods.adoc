@@ -107,10 +107,8 @@ GoogleAnalytics 3.14
 
 Xcode 7.2.1
 
-[NOTE]
-====
-For `pod 'GoogleAnalytics'`
+*For `pod 'GoogleAnalytics'`*
 
 I make the https://github.com/dakeshi/GoogleAnalyticsExample[sample project] using pod 'GoogleAnalytics'.
-====
+
 
