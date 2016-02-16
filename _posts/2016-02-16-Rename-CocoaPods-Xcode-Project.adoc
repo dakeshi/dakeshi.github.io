@@ -1,0 +1,41 @@
+= Rename CocoaPods Xcode Project
+:hp-tags: CocoaPods, Rename Xcode Project
+
+. pod deintegrate 명령을 이용한 pod 삭제(remove CocoaPods)
+.. $ gem install cocoapods-deintegrate
+.. $ pod deintegrate (명령을 수행하기 전에 프로젝트에 대한 백업을 해두기 바란다)
+
+. rename project, scheme, bundle identifier
+.. open xcodeproject project.(xcworkspace project 가 아님)
+.. project navigation에서 프로젝트 이름을 변경한다.
+.. manage schemes -> 기존 scheme 제거 -> Autocrat Scheme Now 선택
+.. bundle identifier 수정
+.. close project
+
+. local folder name 수정
+.. finder에서 프로젝트 관련 파일이 담긴 폴더명을 새로운 이름으로 수정한다.
+.. 프로젝트 파일 폴더 경로 재설정
+... open xcodeproject project
+... project navigation에서 프로젝트 파일/Unit test 폴더 경로 수정.
+.. Info.plist 경로 재설정
++
+Target-Build Setting-Packaging : Info.plist File
++
+
+. re-add CocoaPods to your project
+.. edit Podfile
++
+Podfile target을 변경된 프로젝트 타겟 이름으로 수정한다.
++
+.. pod install
+.. 기존 xcworkspace 파일 삭제
+
+삭제후 pod와 관련되어 남겨진 파일은 다음과 같다.
+
+ Podfile
+ Podfile.lock
+ Workspace
+
+
+
+* reference : http://h4ckish.com/2015/01/22/renaming-your-cocoapods-ios-project/
