@@ -3,8 +3,8 @@
 
 There are two options for implementation with Google Analytics using CocoaPods. 
 
-1. pod 'Google/Analytics'
-2. pod 'GoogleAnalytics' 
+* pod 'Google/Analytics'
+* pod 'GoogleAnalytics' 
 
 There are pros and cons between them.
 
@@ -21,7 +21,7 @@ There are pros and cons between them.
 
 
 I prefer to use `pod 'GoogleAnalytics'` but I'll explain how to solve this issue using pod 'Google/Analytics'
-because the google official site recommends pod 'Google/Analytics'.
+because the google official site uses pod 'Google/Analytics'.
 
 . bridging header
 +
@@ -29,16 +29,21 @@ You just need one line of code for google analytics.
 
  #import <Google/Analytics.h>
 
++
 Don't forget to set target-build setting for Objective-C-Bridging-Header.
 You have to provide correct path to enable Objective-C-Bridging-Header.
 
++
 **Set Target-Build Setting-Objective-C-Bridging-Header**
 $(SRCROOT)/$(PRODUCT_NAME)/projectName_Bridging_Header.h
 
 
-2. AppDelegate.swift
+. AppDelegate.swift
 
-<!-- language: lang-swift -->
+[[AppDelegate]]
+[source,swift]
+.AppDelegate.swift
+----
 
     import Google
 
@@ -60,10 +65,14 @@ $(SRCROOT)/$(PRODUCT_NAME)/projectName_Bridging_Header.h
         gai.trackUncaughtExceptions = true  // report uncaught exceptions
         gai.logger.logLevel = GAILogLevel.Verbose  // remove before app release
     }
+----
 
-3. SomeViewController.swift
+. SomeViewController.swift
 
-<!-- language: lang-swift -->
+[[ViewController]]
+[source,swift]
+.SomeViewController.swift
+----
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -83,6 +92,7 @@ $(SRCROOT)/$(PRODUCT_NAME)/projectName_Bridging_Header.h
         tracker.send(builder.build() as [NSObject : AnyObject])
         
     }
+----
 
 Why do I use trackerWithTrackingId instead of defaultTracker property? You could got an error if you use defaultTracker :
 
@@ -91,11 +101,16 @@ Why do I use trackerWithTrackingId instead of defaultTracker property? You could
 defaultTracker property's initial value is nil, but it will be set after 
 trackerWithTrackingId method is called. But it doesn't work perfectly sometimes. To avoid this issue, I recommend that use trackerWithTrackingId method directly.
 
-I make the [sample project](https://github.com/dakeshi/GoogleAnalyticsExample) using pod 'GoogleAnalytics'. You can get an idea from it. 
-Good luck.
-
-**Test Env**
+*Test Env*
 
 GoogleAnalytics 3.14
 
 Xcode 7.2.1
+
+[NOTE]
+====
+For `pod 'GoogleAnalytics'`
+
+I make the https://github.com/dakeshi/GoogleAnalyticsExample[sample project] using pod 'GoogleAnalytics'.
+====
+
