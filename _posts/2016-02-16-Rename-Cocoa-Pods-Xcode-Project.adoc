@@ -6,6 +6,14 @@ Xcode proejct 이름을 변경하는 작업은 생각보다 에러가 자주 발
 . pod deintegrate 명령을 이용한 pod 삭제(remove CocoaPods)
 .. $ gem install cocoapods-deintegrate
 .. $ pod deintegrate (명령을 수행하기 전에 프로젝트에 대한 백업을 해두기 바란다)
++
+pod 삭제 후 남겨진 파일은 다음과 같다.
+
+ Podfile
+ Podfile.lock
+ Workspace
++
+
 
 . rename project, scheme, bundle identifier
 .. open xcodeproject project.(xcworkspace project 가 아님)
@@ -31,13 +39,6 @@ Podfile target을 변경된 프로젝트 타겟 이름으로 수정한다.
 +
 .. pod install
 .. 기존 xcworkspace 파일 삭제
-
-삭제후 pod와 관련되어 남겨진 파일은 다음과 같다.
-
- Podfile
- Podfile.lock
- Workspace
-
 
 
 * reference : http://h4ckish.com/2015/01/22/renaming-your-cocoapods-ios-project/
