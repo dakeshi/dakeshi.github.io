@@ -1,12 +1,12 @@
 = Maintain your HubPress with the latest version
 :hp-tags: HubPress, update, latest, cross compare fork 
 
-How to maintain your Hubpress with lastest version?
+How to maintain your HubPress with lastest version?
 
 With cross compare fork feature of github, you can always use updated Hubpress.
 
 
-. Click Compare button in your Hubpress repository
+. Click Compare button in your HubPress repository
 +
 image::maintain_the_latest_hubpress_01.png[click compare button]
 
@@ -19,12 +19,12 @@ image::maintain_the_latest_hubpress_02.png[set base fork]
 +
 image::maintain_the_latest_hubpress_03.png[compare across forks]
 
-. Change head fork to Hubpress/hubpress.io repository.
+. Change head fork to HubPress/hubpress.io repository.
 +
 image::maintain_the_latest_hubpress_04.png[set head fork]
 
 
-Now, you can use the most recent Hubpress version with bug fixed, new features.
+Now, you can use the most recent HubPress version with bug fixed, new features.
 
 
 - reference : https://www.youtube.com/watch?v=KCylB780zSM
