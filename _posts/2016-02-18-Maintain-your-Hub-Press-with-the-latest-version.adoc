@@ -3,7 +3,7 @@
 
 How to maintain your HubPress with lastest version?
 
-With cross compare fork feature of github, you can always use updated Hubpress.
+With cross compare fork feature of github, you can always use updated HubPress.
 
 
 . Click Compare button in your HubPress repository
