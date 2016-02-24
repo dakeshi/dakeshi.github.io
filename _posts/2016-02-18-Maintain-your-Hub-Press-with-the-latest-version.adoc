@@ -11,7 +11,7 @@ With cross compare fork feature of github, you can always use updated HubPress.
 image::maintain_the_latest_hubpress_01.png[click compare button]
 
 
-. Change base fork to your repository. I use the master branch here. But if you want to use another branch, you can change it. For example, it would be gh-pages branch.
+. Change base fork to your repository and set the proper branch. I use the master branch here. But if you want to use another branch, you can change it. For example, it would be gh-pages branch.
 +
 image::maintain_the_latest_hubpress_02.png[set base fork]
 
