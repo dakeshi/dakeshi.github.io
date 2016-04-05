@@ -26,14 +26,15 @@ Configure `Fastfile` as your situation. For example:
 - Only testing (unit and integration tests)
 - In House distribution
 
-= fastlane appstore 명령 실행하면 dev portal 에 새로운 버전이 추가된다.
-(dev portal에서 수동으로 신규 버전 생성하지 않아도 된다.)
+== Example
 
-# fastlane 의 문제점
-1. fastlane init 이후에
-(앱스토어에 수동으로 새로운 앱을 등록함(meta 정보, screenshot 교체된) 버전 2.0)
-2. 버전 2.1 은 fastlane 을 통해 dev center 에 앱 등록을 진행하려함.
+ $ fastlane ios appstore
 
-=> 버전 2.1은 현재 앱스토어에 저장된 버전 2.0 정보(meta 정보, screenshot)를 사용하는 것이 아니라 fastlane init 에 의해 저장되어 있던 meta 정보를 이용함.
+Using an default Fastfile, fastlane can create a new app version in Dev Portal. With fastlane, you don't need to create the new version app in Dev Portal.
 
-** fast lane tools 가운데 dev center 에서 최신 버전의 앱 정보를 retrieve 하는 도구는 없는것인가?
+
+== problems 
+
+If you make the new app manually in Dev Portal, after `fastlane init` command, you would be get an trouble in the next app version following with fastlane deployments. Fastlane will use the previous version app information and screenshots when you invoke fastlane `lane` action. (i.e. `fastlane ios appstore`)  
+
+How to retrieve the current AppStore information before fastlane process. I don't know how to solve this issue yet. Does anyone knows about it? Please let me know.
