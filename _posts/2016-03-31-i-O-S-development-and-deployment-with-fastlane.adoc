@@ -30,7 +30,7 @@ Configure `Fastfile` as your situation. For example:
 
  $ fastlane ios appstore
 
-Using an default Fastfile, fastlane can create a new app version in Dev Portal. With fastlane, you don't need to create the new version app in Dev Portal.
+Using an default Fastfile, fastlane can create a new app version in Dev Portal. With fastlane, you don't need to create the new version app through Dev Portal.
 
 
 == Problems 
