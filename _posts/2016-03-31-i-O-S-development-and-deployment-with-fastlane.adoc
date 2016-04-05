@@ -35,6 +35,6 @@ Using an default Fastfile, fastlane can create a new app version in Dev Portal. 
 
 == Problems 
 
-If you make the new app manually in Dev Portal, after `fastlane init` command, you would be get an trouble in the next app version following with fastlane deployments. Fastlane will use the previous version app information and screenshots when you invoke fastlane `lane` action. (i.e. `fastlane ios appstore`)  
+If you make the new app manually in Dev Portal, after `fastlane init` command, you will be get an trouble in the next app version following with fastlane deployments. Fastlane will use the previous version app information and screenshots when you invoke fastlane `lane` action. (i.e. `fastlane ios appstore`)  
 
 How to sync the current AppStore information before fastlane get started. I don't know how to solve this issue yet. Does anyone knows about it? Please let me know.
