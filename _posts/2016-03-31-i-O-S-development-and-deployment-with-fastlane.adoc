@@ -1,7 +1,7 @@
 = iOS development and deployment with fastlane
-Doc Writer <doc.writer@asciidoctor.org>
+Sangjoon Moon <iceblue.dev@gmail.com>
 v1.0, 2016-04-05
-:hp-tags: HubPress, fastlane, ios, deployment
+:hp-tags: HubPress, fastlane, ios, deployment, development
 
 == setting up `fastlane`
 .  `fastlane init` command in the project folder
