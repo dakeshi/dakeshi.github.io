@@ -12,7 +12,7 @@ fastlane tools::
 * sigh : create, renew, download and repair provisioning profiles
 * deliver : upload ipa or pkg files, app screenshots and more to iTunes Connect
 
-.. results with `init` command
+. results with `init` command
 - Created a fastlane folder
 - Moved existing deliver and snapshot configuration into the fastlane folder (if they existed).
 - Created fastlane/Appfile, which stores your Apple ID and Bundle Identifier.
