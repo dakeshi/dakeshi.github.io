@@ -4,13 +4,13 @@ v1.0, 2016-04-05
 :hp-tags: HubPress, fastlane, ios, deployment, development
 
 == setting up `fastlane`
-.  `fastlane init` command in the project folder
+. `fastlane init` command in the project folder
 This will prompt you for your Apple ID in order run produce and enable sigh and deliver.
 
-.. fastlane tools
-- produce : create new iOS apps on iTunes Connect and Dev Portal
-- sigh : create, renew, download and repair provisioning profiles
-- deliver : upload ipa or pkg files, app screenshots and more to iTunes Connect
+fastlane tools::
+* produce : create new iOS apps on iTunes Connect and Dev Portal
+* sigh : create, renew, download and repair provisioning profiles
+* deliver : upload ipa or pkg files, app screenshots and more to iTunes Connect
 
 .. results with `init` command
 - Created a fastlane folder
