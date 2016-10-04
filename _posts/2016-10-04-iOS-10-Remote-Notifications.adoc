@@ -1,0 +1,106 @@
+= iOS 10 Remote Notifications
+
+In iOS 10, remote and local notification are unifed. So, you have to use new API to handle remote notifications in iOS 10. I will show you how to register, handle the remote notification and the actionable notification.
+
+== Remote Notification Process
+
+1. Configure your notification types such as alert, sound, badge, and carPlay. 
+- In iOS 10 +
+use `UNUserNotificationCenter.current().requestAuthorization` method
+- In iOS 9 and below +
+use `UIApplication.shared.registerUserNotificationSettings` method.  
+
+2. Register remote notification to APNs
+- call `UIApplication.shared.registerForRemoteNotifications()` method.
+- If the registration succeeds, it will automatically call  `application:didRegisterForRemoteNotificationsWithDeviceToken` delegate method. If it is failed, `application:didFailToRegisterForRemoteNotificationsWithError` delegate method is called.
+
+3. Register device token to your server (push notification provider)
+4. Communicate between provider and APNs
+5. Handle remote notifications and custom actions for notifications
+- In iOS 10 +
+* `userNotificationCenter(_:willPresent:withCompletionHandler:)` is called when the app is in the foreground
+* use `userNotificationCenter(_:didReceive:withCompletionHandler:)` to deal with actionable notifications
+
+TIP: step 3 and 4 are the server side process.
+
+== New API Example
+=== requestAuthorization
+
+This method sets notification types that ask users whether or not to allow them. It's declaration looks like this:
+
+[source, swift]
+----
+func requestAuthorization(options: UNAuthorizationOptions = [],
+        completionHandler: @escaping (Bool, Error?) -> Void)
+----
+
+- `options` describe which notification types you want to provide.
+- `completionHandler` has two parameters: `granted` and `error`
+* `error` is nil if no error occurred.
+* `granted` returns `true` or `false` depends on the following cases.
+
+[cols="<80,^20", options="header"] 
+|===
+|Cases
+|Return value
+
+|Select *allow* in the authorization dialog
+|True
+
+
+|Select *don't allow* in the authorization dialog
+|False
+
+|User already has selected *allow* from dialog when you call _requestAuthorization_ method 
+|True
+
+|User already has selected *don't allow* from dialog when you call _requestAuthorization_ method 
+|False
+|===
+
+- sample code
+
+[source,swift]
+.appDelegate.swift
+----
+import UserNotifications
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    	// 1. registering notification type
+        if #available(iOS 10.0, *) {
+          UNUserNotificationCenter
+            .current()
+            .requestAuthorization(options: [.alert, .sound, .badge]) {
+              granted, error in
+
+              if granted {
+                print("granted")
+                // 2. registering your app for the remote notification.
+                // success = didRegisterForRemoteNotificationsWithDeviceToken
+                // fail = didFailToRegisterForRemoteNotificationsWithError
+                application.registerForRemoteNotifications()
+              } else {
+                print("Error or nil: \(error?.localizedDescription ?? "check your app notification setting in the setting app")")
+              }
+          }
+        } else {
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(settings)
+            UIApplication.shared.registerForRemoteNotifications()
+        }        
+    }
+    ...
+    ...
+----
+
+== references
+* http://qiita.com/tokorom/items/6c6864fa8e841e50e37b
+* https://gist.github.com/KentarouKanno/d7c7768deea70076264f2208a878de68
+
+
