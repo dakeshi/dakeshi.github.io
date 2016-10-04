@@ -1,4 +1,213 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Tue, 04 Oct 2016 08:25:35 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[Fastlane : iOS development and deployment make easy]]></title><description><![CDATA[<div class="sect1">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Tue, 04 Oct 2016 08:27:04 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[iOS 10 Remote Notifications]]></title><description><![CDATA[<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In iOS 10, remote and local notification are unifed. So, you have to use new API to handle remote notifications in iOS 10. I will show you how to register, handle the remote notification and the actionable notification.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_remote_notification_process">Remote Notification Process</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure your notification types such as alert, sound, badge, and carPlay.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In iOS 10<br>
+use <code>UNUserNotificationCenter.current().requestAuthorization</code> method</p>
+</li>
+<li>
+<p>In iOS 9 and below<br>
+use <code>UIApplication.shared.registerUserNotificationSettings</code> method.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Register remote notification to APNs</p>
+<div class="ulist">
+<ul>
+<li>
+<p>call <code>UIApplication.shared.registerForRemoteNotifications()</code> method.</p>
+</li>
+<li>
+<p>If the registration succeeds, it will automatically call  <code>application:didRegisterForRemoteNotificationsWithDeviceToken</code> delegate method. If it is failed, <code>application:didFailToRegisterForRemoteNotificationsWithError</code> delegate method is called.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Register device token to your server (push notification provider)</p>
+</li>
+<li>
+<p>Communicate between provider and APNs</p>
+</li>
+<li>
+<p>Handle remote notifications and custom actions for notifications</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In iOS 10<br></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>userNotificationCenter(_:willPresent:withCompletionHandler:)</code> is called when the app is in the foreground</p>
+</li>
+<li>
+<p>use <code>userNotificationCenter(_:didReceive:withCompletionHandler:)</code> to deal with actionable notifications</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+step 3 and 4 are the server side process.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_new_api_example">New API Example</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_requestauthorization">requestAuthorization</h3>
+<div class="paragraph">
+<p>This method sets notification types that ask users whether or not to allow them. It&#8217;s declaration looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-swift" data-lang="swift">func requestAuthorization(options: UNAuthorizationOptions = [],
+        completionHandler: @escaping (Bool, Error?) -&gt; Void)</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>options</code> describe which notification types you want to provide.</p>
+</li>
+<li>
+<p><code>completionHandler</code> has two parameters: <code>granted</code> and <code>error</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>error</code> is nil if no error occurred.</p>
+</li>
+<li>
+<p><code>granted</code> returns <code>true</code> or <code>false</code> depends on the following cases.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 80%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Cases</th>
+<th class="tableblock halign-center valign-top">Return value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>allow</strong> in the authorization dialog</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">True</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>don&#8217;t allow</strong> in the authorization dialog</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">False</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User already has selected <strong>allow</strong> from dialog when you call <em>requestAuthorization</em> method</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">True</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User already has selected <strong>don&#8217;t allow</strong> from dialog when you call <em>requestAuthorization</em> method</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">False</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<ul>
+<li>
+<p>sample code</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">appDelegate.swift</div>
+<div class="content">
+<pre class="highlight"><code class="language-swift" data-lang="swift">import UserNotifications
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -&gt; Bool {
+    	// 1. registering notification type
+        if #available(iOS 10.0, *) {
+          UNUserNotificationCenter
+            .current()
+            .requestAuthorization(options: [.alert, .sound, .badge]) {
+              granted, error in
+
+              if granted {
+                print("granted")
+                // 2. registering your app for the remote notification.
+                // success = didRegisterForRemoteNotificationsWithDeviceToken
+                // fail = didFailToRegisterForRemoteNotificationsWithError
+                application.registerForRemoteNotifications()
+              } else {
+                print("Error or nil: \(error?.localizedDescription ?? "check your app notification setting in the setting app")")
+              }
+          }
+        } else {
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(settings)
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+    }
+    ...
+    ...</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_references">references</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://qiita.com/tokorom/items/6c6864fa8e841e50e37b" class="bare">http://qiita.com/tokorom/items/6c6864fa8e841e50e37b</a></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/KentarouKanno/d7c7768deea70076264f2208a878de68" class="bare">https://gist.github.com/KentarouKanno/d7c7768deea70076264f2208a878de68</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>]]></description><link>https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html</link><guid isPermaLink="true">https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html</guid><dc:creator><![CDATA[Sangjoon Moon]]></dc:creator><pubDate>Tue, 04 Oct 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Fastlane : iOS development and deployment make easy]]></title><description><![CDATA[<div class="sect1">
 <h2 id="_setting_up_code_fastlane_code">setting up <code>fastlane</code></h2>
 <div class="sectionbody">
 <div class="olist arabic">
