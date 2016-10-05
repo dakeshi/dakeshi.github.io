@@ -1,30 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <title>iOS 10 Remote Notifications</title>
-    <meta name="description" content="" />
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="shortcut icon" href="https://dakeshi.github.io/favicon.ico">
-
-    <script type="text/javascript" src="//dakeshi.github.io/themes/ichi/assets/js/vendor/fastclick.js?v=1475642982802"></script>
-    <script type="text/javascript" src="//dakeshi.github.io/themes/ichi/assets/js/vendor/modernizr.js?v=1475642982802"></script>
-
-
-    <link rel="stylesheet" type="text/css" href="//dakeshi.github.io/themes/ichi/assets/css/normalize.css?v=1475642982802" />
-    <link rel="stylesheet" type="text/css" href="//dakeshi.github.io/themes/ichi/assets/css/foundation.min.css?v=1475642982802" />
-    <!--[if lte IE 8]>
-        <link rel="stylesheet" type="text/css" href="//dakeshi.github.io/themes/ichi/assets/css/outdatedBrowser.min.css?v=1475642982802">
-    <![endif]-->
-    <link rel="stylesheet" type="text/css" href="//dakeshi.github.io/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1475642982802" />
-    <link rel="stylesheet" type="text/css" href="//dakeshi.github.io/themes/ichi/assets/css/styles.css?v=1475642982802" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
-
+    <title>iOS 10 Remote Notifications</title>
+    <meta name="description" content="" />
+    <link href="//fonts.googleapis.com/css?family=Noto+Sans:300,400,700" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic" rel="stylesheet" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="//dakeshi.github.io/themes/saga/assets/css/style.css?v=1475643128937" rel="stylesheet" type="text/css">
+    <link href="//dakeshi.github.io/themes/saga/assets/css/animate.min.css?v=1475643128937" rel="stylesheet" type="text/css">
+    <link href="https://dakeshi.github.io/favicon.ico" rel="shortcut icon">
     <link rel="canonical" href="https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html" />
     <meta name="referrer" content="origin" />
     
@@ -46,84 +35,30 @@ null
     <link rel="alternate" type="application/rss+xml" title="弘益人間" href="https://dakeshi.github.io/rss/" />
 </head>
 <body class="post-template">
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
-</div>
-
-<nav class="top-bar hide-for-large-up" data-topbar >
-  <ul class="title-area">
-    <li class="name">
-
-    </li>
-    <li class="home"><a class="fi-home" href="https://dakeshi.github.io"></a></li>
-    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
-  </ul>
-
-<div class="overlay overlay-scale">
-    <button type="button" class="overlay-close">Close</button>
-    <nav>
-        <ul>
-            <li><a href="https://dakeshi.github.io">Home</a></li>
-        </ul>
-    </nav>
-</div>
-
-</nav>
-
-<div class="row">
-
-<div class="small-16 medium-16 large-4 columns right head-area" >
-
-<header class="site-head">
-    <div class="vertical">
-        <div class="site-head-content inner">
-            <ul class="side-nav blog-menu show-for-large-up">
-                <li><a class="fi-home" href="https://dakeshi.github.io"></a></li>
-                <li><a class="fi-torso" href="https://dakeshi.github.io/about"></a></li>
-                <li><a class="fi-mail" href="https://dakeshi.github.io/contact"></a></li>
+    <header id="header" class="animated fadeIn">
+    <div class="header-background">
+    <section class="blog-content">
+        <a id="site-url" class="blog-title" href="https://dakeshi.github.io">弘益人間</a>
+        <span class="blog-description">Welcome. I&#x27;m sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.</span>
+        <nav class="links fadeIn animated">
+            <ul>
+                <li class="rss"><a title="RSS Feed" href="/rss/"><i class="fa fa-fw fa-rss-square"></i></a></li>
+        
             </ul>
-            <a class="blog-logo" href="https://dakeshi.github.io"><img alt="弘益人間" src="https://cloud.githubusercontent.com/assets/8563047/13133953/2dd0ba18-d644-11e5-936a-b199d6e39d66.png" alt="Blog Logo" /></a>
-            <h1 class="blog-title">弘益人間</h1>
-            <hr>
-            <p class="blog-description">Welcome. I&#x27;m sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.</p>
-            <div class="blog-network">
-<!--                 <a href="#" class="fi-social-pinterest"></a>
-                <a href="#" class="fi-social-linkedin"></a>
-                <a href="#" class="fi-social-behance"></a>
-                <a href="#" class="fi-social-deviant-art"></a>
-                <a href="#" class="fi-social-dribbble"></a>
-                <a href="#" class="fi-social-flickr"></a>
-                <a href="#" class="fi-social-github"></a>
-                <a href="#" class="fi-social-skype"></a>
-                <a href="#" class="fi-social-snapchat"></a>
-                <a href="#" class="fi-social-steam"></a>
-                <a href="#" class="fi-social-xbox"></a>
-                <a href="#" class="fi-social-reddit"></a> -->
-                  <a href="github.com/dakeshi" class="fi-social-github"></a>
-            </div>
-        </div>
+        </nav>
+    </section>
+    <section class="header-content">
+        <h1 class="post-title animated fadeInUp">iOS 10 Remote Notifications</h1>
+        <span class="post-data"><span class="date animated fadeInUp"><i class="fa fa-clock-o"></i> <time class="timesince date" data-timesince="1475506800" datetime="2016-10-04T00:00" title="04 October 2016">2 days ago</time></span>
+            
+            <span class="author animated fadeInUp"><i class="fa fa-user"></i> <a href="https://dakeshi.github.io/author/dakeshi/">Sangjoon Moon</a></span></span>
+    </section>
     </div>
 </header>
-
-</div>
-
-
-<div class="small-16 medium-16 large-12 columns main-column left">
-    
-
-<main class="content" role="main">
-
-    <article class="post">
-
-
-            <h1 class="post-title">iOS 10 Remote Notifications</h1>
-
-            <span class="post-meta label"><time datetime="2016-10-04">04 Oct 2016</time></span>
-
-            <section class="post-content">
-                <div id="preamble">
+<main id="main" class="content">
+    <article itemtype="http://schema.org/BlogPosting" class="animated fadeIn content post post">
+        <section class="post-content">
+            <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>In iOS 10, remote and local notification are unifed. So, you have to use new API to handle remote notifications in iOS 10. I will show you how to register, handle the remote notification and the actionable notification.</p>
@@ -333,49 +268,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 </div>
 </div>
 </div>
-                        <aside class="tags fi-pricetag-multiple">No tag</aside>
-            </section>
-            <hr>
-            <footer class="post-footer">
+        </section>
 
-                <section class="share">
-                    <h4>Liked this post ? Share it.</h4>
-                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html"
-                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                    </a>
-                    <a class="fi-social-twitter" href="https://twitter.com/share?text=iOS%2010%20Remote%20Notifications&amp;url=https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html"
-                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                    </a>
-                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html"
-                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-                    </a>
-                </section>
-
-                <section class="author">
-                    <header>
-                        <span>About the author</span>
-                    </header>
-                    <section>
-                        <h4>Sangjoon Moon</h4>
-                        <img src="https://avatars.githubusercontent.com/u/8563047?v&#x3D;3">
-                        <span>South Korea</span>
-                        <a href="http://dakeshi.github.io/">http://dakeshi.github.io/</a>
-                    </section>
-                    <footer>
-                         <p></p>
-                    </footer>
-                </section>
-
-        <div class="clearfix"></div>
-                    <hr>
-
-            </footer>
-
-        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
-
-
-
-
+    
         <section class="post-comments">
           <div id="disqus_thread"></div>
           <script type="text/javascript">
@@ -390,16 +285,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
           <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
         </section>
-
-
+    
     </article>
 
 </main>
-
-</div>
-
-</div>
-
+    <footer class="animated fadeIn" id="footer">
+        <section class="colophon">
+          <section class="copyright">Copyright &copy; <span itemprop="copyrightHolder">弘益人間</span>. <span rel="license">All Rights Reserved</span>.</section>
+          <section class="poweredby">Published with <a class="icon-ghost" href="http://hubpress.io">HubPress</a></section>
+        </section>
+        <section class="bottom">
+          <section class="attribution">
+            <a href="http://github.com/Reedyn/Saga">Built with <i class="fa fa-heart"></i> and Free and Open-Source Software</a>.
+          </section>
+        </section>
+    </footer>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
       <script type="text/javascript">
         jQuery( document ).ready(function() {
@@ -412,16 +312,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         hljs.initHighlightingOnLoad();
       </script>
-
-    <!--[if lte IE 8]>
-        <script type="text/javascript" src="//dakeshi.github.io/themes/ichi/assets/js/outdatedBrowser.min.js?v=1475642982802"></script>
-    <![endif]-->
-    <script type="text/javascript" src="//dakeshi.github.io/themes/ichi/assets/js/min/built.js?v=1475642982802"></script>
-
-    <script>
-      $(document).foundation();
-    </script>
-
+    <script src="//dakeshi.github.io/themes/saga/assets/js/scripts.js?v=1475643128937"></script>
+    
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
