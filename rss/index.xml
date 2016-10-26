@@ -1,42 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 05 Oct 2016 04:59:05 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[iOS 10 Remote Notifications]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 07:18:55 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[iOS 10 Remote Notification]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In iOS 10, remote and local notification are unifed. So, you have to use new API to handle remote notifications in iOS 10. I will show you how to register, handle the remote notification and the actionable notification.</p>
+<p>In iOS 10, there are big changes in the notification. Remote and local notification methods are unified. You can add media such as image using notification extension. In this article, I will talk about how to set up notification types and register the remote notification. And I will show you how to handle remote notification and the actionable notification in the next section.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_remote_notification_process">Remote Notification Process</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>First, it is helpful to know about how to work remote notification. Remote notification involves the following steps:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Configure your notification types such as alert, sound, badge, and carPlay.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>In iOS 10<br>
-use <code>UNUserNotificationCenter.current().requestAuthorization</code> method</p>
-</li>
-<li>
-<p>In iOS 9 and below<br>
-use <code>UIApplication.shared.registerUserNotificationSettings</code> method.</p>
-</li>
-</ul>
-</div>
+<p>Configure your notification types and register the remote notification</p>
 </li>
 <li>
 <p>Register remote notification to APNs</p>
-<div class="ulist">
-<ul>
-<li>
-<p>call <code>UIApplication.shared.registerForRemoteNotifications()</code> method.</p>
-</li>
-<li>
-<p>If the registration succeeds, it will automatically call  <code>application:didRegisterForRemoteNotificationsWithDeviceToken</code> delegate method. If it is failed, <code>application:didFailToRegisterForRemoteNotificationsWithError</code> delegate method is called.</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p>Register device token to your server (push notification provider)</p>
@@ -45,32 +26,15 @@ use <code>UIApplication.shared.registerUserNotificationSettings</code> method.</
 <p>Communicate between provider and APNs</p>
 </li>
 <li>
-<p>Handle remote notifications and custom actions for notifications</p>
-<div class="ulist">
-<ul>
-<li>
-<p>In iOS 10<br></p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>userNotificationCenter(_:willPresent:withCompletionHandler:)</code> is called when the app is in the foreground</p>
-</li>
-<li>
-<p>use <code>userNotificationCenter(_:didReceive:withCompletionHandler:)</code> to deal with actionable notifications</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
+<p>Handle remote notifications</p>
 </li>
 </ol>
 </div>
-<div class="admonitionblock tip">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 step 3 and 4 are the server side process.
@@ -81,12 +45,24 @@ step 3 and 4 are the server side process.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_new_api_example">New API Example</h2>
+<h2 id="_configure_notification_types_and_register_the_remote_notification">configure notification types and register the remote notification</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_requestauthorization">requestAuthorization</h3>
+<h3 id="_configure_notification_types">configure notification types</h3>
 <div class="paragraph">
-<p>This method sets notification types that ask users whether or not to allow them. It&#8217;s declaration looks like this:</p>
+<p>You need to request authorization for receiving notifications. In this stage, you can set up notification types such as alert, sound and badge.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">In iOS 9 and below</dt>
+<dd>
+<p>use <code>registerUserNotificationSettings</code> method</p>
+</dd>
+<dt class="hdlist1">In iOS 10</dt>
+<dd>
+<p>use <code>requestAuthorization(options:completionHandler:)</code> method.</p>
+</dd>
+</dl>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -107,7 +83,7 @@ step 3 and 4 are the server side process.
 <p><code>error</code> is nil if no error occurred.</p>
 </li>
 <li>
-<p><code>granted</code> returns <code>true</code> or <code>false</code> depends on the following cases.</p>
+<p><code>granted</code> returns <code>true</code> or <code>false</code> depends on the following cases:</p>
 </li>
 </ul>
 </div>
@@ -127,30 +103,65 @@ step 3 and 4 are the server side process.
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>allow</strong> in the authorization dialog</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>allow</strong> in the authorization request dialog</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock">True</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>don&#8217;t allow</strong> in the authorization dialog</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>don&#8217;t allow</strong> in the authorization request dialog</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock">False</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">User already has selected <strong>allow</strong> from dialog when you call <em>requestAuthorization</em> method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The notification settings for the app is not enabled</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">False</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The notification settings for the app is enabled but one or more authorization options are disabled</p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock">True</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">User already has selected <strong>don&#8217;t allow</strong> from dialog when you call <em>requestAuthorization</em> method</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock">False</p></td>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>It is not results what I expected. Why?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+The value of this parameter is <strong>true</strong> when authorization for the requested options was granted. The value is <strong>false</strong> when authorization for one or more of the options is denied.
+</blockquote>
+<div class="attribution">
+&#8212; granted parameter in Apple Document
+</div>
+</div>
+<div class="paragraph">
+<p>They talk about requested options, not the notification setting. But the practical test results is different. It has not returned <code>false</code> value if users change authorization options in the setting app.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Authorization request dialog appears only once when you launch your app at the first time. So, I recommend you to set up <code>.alert</code> option as a default. If you omit it from <code>registerUserNotificationSettings</code> or <code>requestAuthorization(options:completionHandler:)</code> , you could not find <code>.alert</code> option in the setting app for your app notification.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_register_the_remote_notification">register the remote notification</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>sample code</p>
+<p>call <code>registerForRemoteNotifications()</code> method.</p>
+</li>
+<li>
+<p>If the registration succeeds, it will automatically call  <code>application:didRegisterForRemoteNotificationsWithDeviceToken</code> delegate method. If it is failed, <code>application:didFailToRegisterForRemoteNotificationsWithError</code> delegate method is called.</p>
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sample_code">sample code</h3>
 <div class="listingblock">
 <div class="title">appDelegate.swift</div>
 <div class="content">
@@ -166,29 +177,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     	// 1. registering notification type
         if #available(iOS 10.0, *) {
           UNUserNotificationCenter
-            .current()
-            .requestAuthorization(options: [.alert, .sound, .badge]) {
-              granted, error in
+          .current()
+          .requestAuthorization(options: [.alert, .sound, .badge]) {
+            granted, error in
 
-              if granted {
-                print("granted")
-                // 2. registering your app for the remote notification.
-                // success = didRegisterForRemoteNotificationsWithDeviceToken
-                // fail = didFailToRegisterForRemoteNotificationsWithError
-                application.registerForRemoteNotifications()
-              } else {
-                print("Error or nil: \(error?.localizedDescription ?? "check your app notification setting in the setting app")")
-              }
+           if granted {
+             debugPrint("granted")
+             // 2. registering your app for remote notifications.
+             application.registerForRemoteNotifications()
+           } else {
+            // Disable the notification service. ex) Notify to provider server.
+            debugPrint("Error or nil: \(error?.localizedDescription ?? "check your app notification setting in the setting app")")
           }
-        } else {
+       } else {
             let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(settings)
-            UIApplication.shared.registerForRemoteNotifications()
+            // use application:didRegister delegate method to call registerForRemoteNotifications in iOS9 below
         }
     }
     ...
-    ...</code></pre>
+    ...
+
+@available(iOS, deprecated: 10.0)
+extension AppDelegate {
+  func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+    application.registerForRemoteNotifications()
+  }
+}</code></pre>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_register_remote_notifications_to_apns">Register remote notifications to APNs</h3>
+<div class="paragraph">
+<p>If you register your remote notification successfully to APNs,</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_handle_remote_notifications">Handle remote notifications</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>foreground</p>
+</li>
+<li>
+<p>background or the app is closed</p>
+</li>
+<li>
+<p>In iOS 10<br></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>userNotificationCenter(_:willPresent:withCompletionHandler:)</code> is called when the app is the foreground state</p>
+</li>
+<li>
+<p>use <code>userNotificationCenter(_:didReceive:withCompletionHandler:)</code> to deal with actionable notifications when the app is the background or closed state.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>custom actions</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -199,6 +249,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 <div class="ulist">
 <ul>
 <li>
+<p>configure notificaiton types and register notifications</p>
+<div class="ulist">
+<ul>
+<li>
 <p><a href="http://qiita.com/tokorom/items/6c6864fa8e841e50e37b" class="bare">http://qiita.com/tokorom/items/6c6864fa8e841e50e37b</a></p>
 </li>
 <li>
@@ -206,8 +260,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 </li>
 </ul>
 </div>
+</li>
+</ul>
 </div>
-</div>]]></description><link>https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html</link><guid isPermaLink="true">https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notifications.html</guid><dc:creator><![CDATA[Sangjoon Moon]]></dc:creator><pubDate>Tue, 04 Oct 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Fastlane : iOS development and deployment make easy]]></title><description><![CDATA[<div class="sect1">
+</div>
+</div>]]></description><link>https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html</link><guid isPermaLink="true">https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html</guid><dc:creator><![CDATA[Sangjoon Moon]]></dc:creator><pubDate>Tue, 04 Oct 2016 00:00:00 GMT</pubDate></item><item><title><![CDATA[Fastlane : iOS development and deployment make easy]]></title><description><![CDATA[<div class="sect1">
 <h2 id="_setting_up_code_fastlane_code">setting up <code>fastlane</code></h2>
 <div class="sectionbody">
 <div class="olist arabic">
