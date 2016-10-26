@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 07:29:35 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[iOS 10 Remote Notification]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 07:32:21 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[iOS 10 Remote Notification]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>In iOS 10, there are big changes in the notification. Remote and local notification methods are unified. You can add media such as image using notification extension. In this article, I will talk about how to set up notification types and register the remote notification. And I will show you how to handle remote notification and the actionable notification in the next section.</p>
@@ -143,8 +143,9 @@ Authorization request dialog appears only once when you launch your app at the f
 </tr>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_register_the_remote_notification">register the remote notification</h4>
+</div>
+<div class="sect2">
+<h3 id="_register_the_remote_notification">register the remote notification</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -154,7 +155,6 @@ Authorization request dialog appears only once when you launch your app at the f
 <p>If the registration succeeds, it will automatically call  <code>application:didRegisterForRemoteNotificationsWithDeviceToken</code> delegate method. If it is failed, <code>application:didFailToRegisterForRemoteNotificationsWithError</code> delegate method is called.</p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -178,13 +178,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           .requestAuthorization(options: [.alert, .sound, .badge]) {
             granted, error in
 
-           if granted {
+           if granted &amp;&amp; error == nil {
              debugPrint("granted")
              // 2. registering your app for remote notifications.
              application.registerForRemoteNotifications()
            } else {
             // Disable the notification service. ex) Notify to provider server.
-            debugPrint("Error or nil: \(error?.localizedDescription ?? "check your app notification setting in the setting app")")
+            debugPrint(error?.localizedDescription ?? "authorization is not granted. check your app notification setting in the setting app")
           }
        } else {
             let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
