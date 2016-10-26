@@ -58,10 +58,10 @@ func requestAuthorization(options: UNAuthorizationOptions = [],
 
 It is not results what I expected. Why?
 
-[quote, granted parameter in Apple Document]
-The value of this parameter is *true* when authorization for the requested options was granted. The value is *false* when authorization for one or more of the options is denied.
+[quote]
+The value of this parameter is *true* when authorization for the requested options was granted. The value is *false* when authorization for one or more of the options is denied. 
 
-They talk about requested options, not the notification setting. But the practical test results is different. It has not returned `false` value if users change authorization options in the setting app.
+In apple document, they talk about requested options, not the notification setting. But the practical test results is different. It has not returned `false` value if users change authorization options in the setting app.
 
 NOTE: Authorization request dialog appears only once when you launch your app at the first time. So, I recommend you to set up `.alert` option as a default. If you omit it from `registerUserNotificationSettings` or `requestAuthorization(options:completionHandler:)` , you could not find `.alert` option in the setting app for your app notification. 
 
