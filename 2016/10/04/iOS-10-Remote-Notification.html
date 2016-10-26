@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>iOS 10 Remote Notification</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="https://dakeshi.github.io/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//dakeshi.github.io/themes/casper/assets/css/screen.css?v=1477466335698" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html" />
+    <meta name="referrer" content="origin" />
+    
+    <meta property="og:site_name" content="弘益人間" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="iOS 10 Remote Notification" />
+    <meta property="og:description" content="In iOS 10, there are big changes in the notification. Remote and local notification methods are unified. You can add media such as image using notification extension. In this article, I will talk about how to set up notification types and register the remote notification. And I will show you" />
+    <meta property="og:url" content="https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="iOS 10 Remote Notification" />
+    <meta name="twitter:description" content="In iOS 10, there are big changes in the notification. Remote and local notification methods are unified. You can add media such as image using notification extension. In this article, I will talk about how to set up notification types and register the remote notification. And I will show you" />
+    <meta name="twitter:url" content="https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html" />
+    
+    <script type="application/ld+json">
+null
+    </script>
+
+    <meta name="generator" content="HubPress" />
+    <link rel="alternate" type="application/rss+xml" title="弘益人間" href="https://dakeshi.github.io/rss/" />
+</head>
+<body class="post-template nav-closed">
+
+    
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        <a class="blog-logo" href="https://dakeshi.github.io"><img src="https://cloud.githubusercontent.com/assets/8563047/13133953/2dd0ba18-d644-11e5-936a-b199d6e39d66.png" alt="弘益人間" /></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">iOS 10 Remote Notification</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-10-04">04 October 2016</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In iOS 10, there are big changes in the notification. Remote and local notification methods are unified. You can add media such as image using notification extension. In this article, I will talk about how to set up notification types and register the remote notification. And I will show you how to handle remote notification and the actionable notification in the next section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_remote_notification_process">Remote Notification Process</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First, it is helpful to know about how to work remote notification. Remote notification involves the following steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Configure your notification types and register the remote notification</p>
+</li>
+<li>
+<p>Register remote notification to APNs</p>
+</li>
+<li>
+<p>Register device token to your server (push notification provider)</p>
+</li>
+<li>
+<p>Communicate between provider and APNs</p>
+</li>
+<li>
+<p>Handle remote notifications</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+step 3 and 4 are the server side process.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_configure_notification_types_and_register_the_remote_notification">configure notification types and register the remote notification</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_configure_notification_types">configure notification types</h3>
+<div class="paragraph">
+<p>You need to request authorization for receiving notifications. In this stage, you can set up notification types such as alert, sound and badge.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">In iOS 9 and below</dt>
+<dd>
+<p>use <code>registerUserNotificationSettings</code> method</p>
+</dd>
+<dt class="hdlist1">In iOS 10</dt>
+<dd>
+<p>use <code>requestAuthorization(options:completionHandler:)</code> method.</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-swift" data-lang="swift">func requestAuthorization(options: UNAuthorizationOptions = [],
+        completionHandler: @escaping (Bool, Error?) -&gt; Void)</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>options</code> describe which notification types you want to provide.</p>
+</li>
+<li>
+<p><code>completionHandler</code> has two parameters: <code>granted</code> and <code>error</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>error</code> is nil if no error occurred.</p>
+</li>
+<li>
+<p><code>granted</code> returns <code>true</code> or <code>false</code> depends on the following cases:</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 80%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Cases</th>
+<th class="tableblock halign-center valign-top">Return value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>allow</strong> in the authorization request dialog</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">True</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select <strong>don&#8217;t allow</strong> in the authorization request dialog</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">False</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The notification settings for the app is not enabled</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">False</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The notification settings for the app is enabled but one or more authorization options are disabled</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">True</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>It is not results what I expected. Why?</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+The value of this parameter is <strong>true</strong> when authorization for the requested options was granted. The value is <strong>false</strong> when authorization for one or more of the options is denied.
+</blockquote>
+<div class="attribution">
+&#8212; granted parameter in Apple Document
+</div>
+</div>
+<div class="paragraph">
+<p>They talk about requested options, not the notification setting. But the practical test results is different. It has not returned <code>false</code> value if users change authorization options in the setting app.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Authorization request dialog appears only once when you launch your app at the first time. So, I recommend you to set up <code>.alert</code> option as a default. If you omit it from <code>registerUserNotificationSettings</code> or <code>requestAuthorization(options:completionHandler:)</code> , you could not find <code>.alert</code> option in the setting app for your app notification.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_register_the_remote_notification">register the remote notification</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>call <code>registerForRemoteNotifications()</code> method.</p>
+</li>
+<li>
+<p>If the registration succeeds, it will automatically call  <code>application:didRegisterForRemoteNotificationsWithDeviceToken</code> delegate method. If it is failed, <code>application:didFailToRegisterForRemoteNotificationsWithError</code> delegate method is called.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sample_code">sample code</h3>
+<div class="listingblock">
+<div class="title">appDelegate.swift</div>
+<div class="content">
+<pre class="highlight"><code class="language-swift" data-lang="swift">import UserNotifications
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -&gt; Bool {
+    	// 1. registering notification type
+        if #available(iOS 10.0, *) {
+          UNUserNotificationCenter
+          .current()
+          .requestAuthorization(options: [.alert, .sound, .badge]) {
+            granted, error in
+
+           if granted {
+             debugPrint("granted")
+             // 2. registering your app for remote notifications.
+             application.registerForRemoteNotifications()
+           } else {
+            // Disable the notification service. ex) Notify to provider server.
+            debugPrint("Error or nil: \(error?.localizedDescription ?? "check your app notification setting in the setting app")")
+          }
+       } else {
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            // use application:didRegister delegate method to call registerForRemoteNotifications in iOS9 below
+        }
+    }
+    ...
+    ...
+
+@available(iOS, deprecated: 10.0)
+extension AppDelegate {
+  func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+    application.registerForRemoteNotifications()
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_register_remote_notifications_to_apns">Register remote notifications to APNs</h3>
+<div class="paragraph">
+<p>If you register your remote notification successfully to APNs,</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_handle_remote_notifications">Handle remote notifications</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>foreground</p>
+</li>
+<li>
+<p>background or the app is closed</p>
+</li>
+<li>
+<p>In iOS 10<br></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>userNotificationCenter(_:willPresent:withCompletionHandler:)</code> is called when the app is the foreground state</p>
+</li>
+<li>
+<p>use <code>userNotificationCenter(_:didReceive:withCompletionHandler:)</code> to deal with actionable notifications when the app is the background or closed state.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>custom actions</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_references">references</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>configure notificaiton types and register notifications</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://qiita.com/tokorom/items/6c6864fa8e841e50e37b" class="bare">http://qiita.com/tokorom/items/6c6864fa8e841e50e37b</a></p>
+</li>
+<li>
+<p><a href="https://gist.github.com/KentarouKanno/d7c7768deea70076264f2208a878de68" class="bare">https://gist.github.com/KentarouKanno/d7c7768deea70076264f2208a878de68</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="https://dakeshi.github.io/author/dakeshi/" style="background-image: url(https://avatars.githubusercontent.com/u/8563047?v&#x3D;3)"><span class="hidden">Sangjoon Moon's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="https://dakeshi.github.io/author/dakeshi/">Sangjoon Moon</a></h4>
+
+                    <p>Read <a href="https://dakeshi.github.io/author/dakeshi/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    <span class="author-location icon-location">South Korea</span>
+                    <span class="author-link icon-link"><a href="http://dakeshi.github.io/">http://dakeshi.github.io/</a></span>
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=iOS%2010%20Remote%20Notification&amp;url=https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://dakeshi.github.io/2016/10/04/iOS-10-Remote-Notification.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'dkgit'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="https://dakeshi.github.io">弘益人間</a> &copy; 2016</section>
+            <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();
+      </script>
+
+    <script type="text/javascript" src="//dakeshi.github.io/themes/casper/assets/js/jquery.fitvids.js?v=1477466335698"></script>
+    <script type="text/javascript" src="//dakeshi.github.io/themes/casper/assets/js/index.js?v=1477466335698"></script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-74534243-1', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>
