@@ -116,7 +116,7 @@ extension AppDelegate {
 ----
 
 === Register remote notifications to APNs
-If you register your remote notification successfully to APNs,   
+WIP  
 
 === Handle remote notifications
 - foreground
