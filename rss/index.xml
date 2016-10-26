@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 07:35:04 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[iOS 10 Remote Notification]]></title><description><![CDATA[<div id="preamble">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[弘益人間]]></title><description><![CDATA[Welcome. I'm sangjoon-moon, a software developer and interested in mobile programming, UI/UX, open source projects, crowd sourcing translations.]]></description><link>https://dakeshi.github.io</link><generator>RSS for Node</generator><lastBuildDate>Wed, 26 Oct 2016 07:37:22 GMT</lastBuildDate><atom:link href="https://dakeshi.github.io/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[iOS 10 Remote Notification]]></title><description><![CDATA[<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>In iOS 10, there are big changes in the notification. Remote and local notification methods are unified. You can add media such as image using notification extension. In this article, I will talk about how to set up notification types and register the remote notification. And I will show you how to handle remote notification and the actionable notification in the next section.</p>
@@ -129,7 +129,7 @@ The value of this parameter is <strong>true</strong> when authorization for the 
 </blockquote>
 </div>
 <div class="paragraph">
-<p>In apple document, they talk about requested options, not the notification setting. But the practical test results is different. It has not returned <code>false</code> value if users change authorization options in the setting app.</p>
+<p>In apple document, they talk about requested options, not the notification setting. But the practical test results is different. It has not returned <code>false</code> value if users change authorization options such as disabling alert in the setting app.</p>
 </div>
 <div class="admonitionblock note">
 <table>
