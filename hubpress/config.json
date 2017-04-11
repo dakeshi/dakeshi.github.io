@@ -18,5 +18,21 @@
   },
   "theme": {
     "name": "casper"
+  },
+  "urls": {
+    "site": "https://dakeshi.github.io",
+    "hubpress": "http://dakeshi.github.io",
+    "theme": "//dakeshi.github.io/themes/casper",
+    "images": "https://dakeshi.github.io/images"
+  },
+  "initialisationConfigComponent": {
+    "name": "initialise-configuration",
+    "computed": {},
+    "methods": {},
+    "staticRenderFns": [
+      null,
+      null,
+      null
+    ]
   }
 }
