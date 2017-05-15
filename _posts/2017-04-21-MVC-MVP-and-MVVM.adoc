@@ -1,10 +1,11 @@
 = MVC, MVP, and MVVM
 // See https://hubpress.gitbooks.io/hubpress-knowledgebase/content/ for information about the parameters.
 // :published_at: 2019-01-31
-// :hp-tags: MVC, MVP, MVVM
-// :hp-alt-title: My English Title
+:hp-tags: MVC, MVP, MVVM
+// :hp-alt-title: Mobile app architecture
 
 # MVC, MVP, and MVVM
+
 
 sljflin 
 image::https://cloud.githubusercontent.com/assets/8563047/25264714/ab8f1174-26a3-11e7-8cdc-f458f3df1e7b.png[Sunset]
