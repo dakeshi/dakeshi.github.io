@@ -1,0 +1,11 @@
+# Good Architecture
+https://www.youtube.com/watch?v=2GSPPvn0P3Y
+https://slideslive.com/38897361/good-ios-application-architecture-en
+
+:hp-tags: iOS architecture, TDD, testability
+:hp-alt-title: Good iOS architecture with TDD, unidirectional data flow
+
+## Testability
+- Writing tests firsts gives you a cleaner perspective on the ideal API design.
+- You can get the new perspective as API user.
+- Make sure that the change you create may didn't break some other features that you already have.
